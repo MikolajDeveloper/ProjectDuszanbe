@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using ProjectDuszanbe.Application;
 using ProjectDuszanbe.Infrastructure;
 
 namespace ProjectDuszanbe
@@ -37,7 +38,11 @@ namespace ProjectDuszanbe
             services.AddDbContext<Context>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            services.AddApplication();
         }
+        
+        
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
