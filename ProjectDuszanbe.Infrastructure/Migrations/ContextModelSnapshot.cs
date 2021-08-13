@@ -7,6 +7,9 @@ using ProjectDuszanbe.Infrastructure;
 
 namespace ProjectDuszanbe.Infrastructure.Migrations
 {
+    
+    //dotnet ef migrations add NewMigration --startup-project ../ProjectDuszanbe/ProjectDuszanbe.csproj
+    //dotnet ef database update --startup-project ../ProjectDuszanbe/ProjectDuszanbe.csproj
     [DbContext(typeof(Context))]
     partial class ContextModelSnapshot : ModelSnapshot
     {
