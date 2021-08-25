@@ -2,17 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectDuszanbe.Infrastructure;
 
 namespace ProjectDuszanbe.Infrastructure.Migrations
 {
-    //dotnet ef migrations add NewMigration --startup-project ../ProjectDuszanbe/ProjectDuszanbe.csproj
-    //dotnet ef database update --startup-project ../ProjectDuszanbe/ProjectDuszanbe.csproj
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20210825120635_SecondMigration")]
+    partial class SecondMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -7,7 +7,7 @@ namespace ProjectDuszanbe.Application.Interfaces
 {
     public interface ITranslationService
     {
-        Task<KeyValuePair<TranslationDto, TranslationDto>> GetTranslation(TranslationDto word, LanguageDto languageFrom,
-            LanguageDto languageTo);
+        Task<List<TranslationDto>> GetTranslation(string word, string languageFrom,
+            string languageTo);
     }
 }

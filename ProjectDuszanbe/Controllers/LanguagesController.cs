@@ -5,13 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ProjectDuszanbe.Application.Interfaces;
 using ProjectDuszanbe.Application.ViewModels;
-using ProjectDuszanbe.Domain.Model;
-using ProjectDuszanbe.Infrastructure;
 
 namespace ProjectDuszanbe.Controllers
 {
     [ApiController]
-    [Route("LanguagesController")]
+    [Route("api/languages")]
     public class LanguagesController : ControllerBase
     {
         private readonly ILogger<LanguagesController> _logger;
@@ -28,6 +26,10 @@ namespace ProjectDuszanbe.Controllers
         public async Task<ActionResult<LanguageDto>> GetLanguage(string shortcut)
         {
             var language = await _languageService.GetLanguage(shortcut);
+
+            if (language == null)
+                return NotFound();
+            
             return Ok(language);
         }
 
@@ -36,7 +38,11 @@ namespace ProjectDuszanbe.Controllers
         public async Task<ActionResult<List<LanguageDto>>> GetAllLanguages()
         {
             var languages = await _languageService.GetAllLanguages();
-            return Ok(languages);
+
+            if (languages == null)
+                return NotFound();
+            
+            return new JsonResult(languages);
         }
     }
 }

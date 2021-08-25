@@ -9,7 +9,9 @@ namespace ProjectDuszanbe.Application.Mapping
         public MappingProfile()
         {
             CreateMap<Language, LanguageDto>();
-            CreateMap<Translation, TranslationDto>();
+            CreateMap<Translation, TranslationDto>()
+                .ForMember(t => t.Language, d 
+                    => d.MapFrom(z => z.Language.Shortcut));
             CreateMap<Word, WordDto>();
         }
     }

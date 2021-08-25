@@ -12,10 +12,9 @@ namespace ProjectDuszanbe.Application.Services
 {
     public class TranslationService : ITranslationService
     {
-        
         private readonly Context _context;
         private readonly IMapper _mapper;
-        
+
         public TranslationService(Context context, IMapper mapper)
         {
             _context = context;
@@ -23,17 +22,17 @@ namespace ProjectDuszanbe.Application.Services
         }
 
 
-        public async Task<KeyValuePair<TranslationDto, TranslationDto>> GetTranslation(TranslationDto word, LanguageDto languageFrom, LanguageDto languageTo)
+        public async Task<List<TranslationDto>> GetTranslation(string word, string languageFrom,
+            string languageTo)
         {
-            var translationFrom = await FindTranslationAsync(word, languageFrom);
-            var translationTo = await FindTranslationAsync(word, languageTo);
+            var wordForTranslation = await _context.Words.Include(w => w.Translations).ThenInclude(t => t.Language)
+                .FirstOrDefaultAsync(w => w.Translations.Select(t => t.Name).Contains(word));
 
-            return new KeyValuePair<TranslationDto, TranslationDto>(_mapper.Map<TranslationDto>(translationFrom), _mapper.Map<TranslationDto>(translationTo));
-        }
+            var translationFrom = wordForTranslation.Translations.FirstOrDefault(t => t.Language.Shortcut == languageFrom);
+            var translationTo = wordForTranslation.Translations.FirstOrDefault(t => t.Language.Shortcut == languageTo);
 
-        private Task<Translation> FindTranslationAsync(TranslationDto translation, LanguageDto language)
-        {
-            return _context.Translations.FirstOrDefaultAsync(t => t.Word.Id == translation.Word.Id && t.Language.Id == language.Id);
+            return new List<TranslationDto>() {_mapper.Map<TranslationDto>(translationFrom),
+                _mapper.Map<TranslationDto>(translationTo)};
         }
     }
 }

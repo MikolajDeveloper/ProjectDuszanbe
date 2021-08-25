@@ -1,6 +1,7 @@
 using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,15 +24,23 @@ namespace ProjectDuszanbe
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers(setupAction =>
+            {
+                setupAction.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "ProjectDuszanbe", Version = "v1"});
             });
-           // services.AddDbContext<Context>(options =>
-           //     options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
-           services.AddDbContext<Context>(options =>
+#if DEBUG
+             services.AddDbContext<Context>(options =>
+                 options.UseSqlite(Configuration.GetConnectionString("DevelopmentConnection")));
+#endif
+#if RELEASE
+            services.AddDbContext<Context>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+#endif
+           
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddApplication();
